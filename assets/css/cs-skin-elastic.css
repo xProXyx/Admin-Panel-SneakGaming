@@ -356,7 +356,7 @@ ul.list{
 }
 .footer{
 		width: 100%;
-    position: absolute;
+    position: fixed;
     display: block;
     bottom: 0;
     left: 0;
