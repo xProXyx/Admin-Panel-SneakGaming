@@ -63,3 +63,16 @@ function inlineEdit($action,$userid,$currentValue){
   $data = ob_get_contents();
   ob_end_flush();
 }
+
+
+function isValidCsrfToken($token) {
+	if($token == $_SESSION['lastCsrfToken']) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function getCurrentCsrfToken() {
+	return $_SESSION['CsrfToken'];
+}

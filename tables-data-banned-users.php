@@ -92,6 +92,7 @@
                 data: {
                   steamid: jQuery(this).data('steamid'),
                   banid: jQuery(this).data('banid'),
+				  csrfToken: '<?php echo getCurrentCsrfToken(); ?>',
                 } ,
                 url: "/admin/actions/removeBan.php",
                 dataType: "html",   //expect html to be returned

@@ -1,6 +1,7 @@
 <?php include('template-parts/header.php'); ?>
 <?php include('template-parts/session.php'); ?>
 <?php include('template-parts/left-panel.php'); ?>
+<?php require_once('template-parts/antiCsrf.php'); ?>
     <!-- Right Panel -->
 
     <div id="right-panel" class="right-panel">
