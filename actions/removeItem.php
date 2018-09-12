@@ -1,4 +1,5 @@
 <?php
+include('../template-parts/session.php');
 require '../config.php';
 $itemID = $_GET['itemid'];
 

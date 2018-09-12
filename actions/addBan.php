@@ -1,10 +1,13 @@
 <?php
+include('../template-parts/session.php');
 require '../config.php';
 $steamid = $_GET['steamid'];
 $reason = ($_GET['reason'] == '' ? 'No reason specified' : $_GET['reason']);
 $license = $_GET['license'];
 $username = $_GET['username'];
-$reason = $reason . ' ( Nickname: '.$username.' ), Banned by: '  . $_GET['bannedby'];
+$timestamp = strtotime('now');
+$byadmin = $_GET['bannedby'];
+$reason = $reason . ' ( Nickname: '.$username.' ), Banned by: '  . $byadmin;
 
 $timestap = strtotime("now");
 $checkSql = "SELECT identifier, steam FROM ea_bans WHERE identifier = '{$license}' OR steam = '{$steamid}'";
@@ -13,7 +16,13 @@ $resultCheckCount = $resultCheck->num_rows;
 if(!empty($_GET['actionbyuser'])){
   if(!empty($_GET['expires'])){
     $expireselect = $_GET['expires'];
-    if($expireselect == '1w'){
+    if($expireselect == '1d'){
+      $bantime = strtotime("+1 days");
+    }elseif($expireselect == '2d'){
+      $bantime = strtotime("+2 days");
+    }elseif($expireselect == '3d'){
+      $bantime = strtotime("+3 days");
+    }elseif($expireselect == '1w'){
       $bantime = strtotime("+7 days");
     }elseif($expireselect == '2w'){
       $bantime = strtotime("+14 days");
@@ -47,8 +56,11 @@ if($resultCheckCount > 0){
     header('location: /admin/view-user.php?userid='.$_GET['userid'].'&action=error1');
   }
 }else{
+  $userid = $_GET['userid'];
   $sql = "INSERT INTO ea_bans (expire, identifier, steam, reason, steamname) VALUES ( '{$bantime}', '{$license}', '{$steamid}' , '{$reason}', '{$username}'  )";
-  if ($link->query($sql) === TRUE) {
+  $sql3 = "INSERT INTO received_bans (reason, byadmin, ban_expires, banned_on, userid) VALUES ( '{$reason}', '{$byadmin}', '{$bantime}' , '{$timestamp}', '{$userid}'  )";
+
+  if ($link->query($sql) === TRUE && $link->query($sql3) === TRUE) {
       echo "New ban record created successfully";
       $sql2 = "INSERT INTO kicks (steamid,reason,kicked) VALUES  ( '{$steamid}' , '{$reason}' , '0')";
       if ($link->query($sql2) === TRUE) {
@@ -63,4 +75,5 @@ if($resultCheckCount > 0){
         header('location: /admin/view-user.php?userid='.$_GET['userid'].'&action=error');
       }
   }
+
 }

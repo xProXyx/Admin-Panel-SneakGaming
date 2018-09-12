@@ -1,4 +1,5 @@
 <?php
+include('../template-parts/session.php');
 require '../config.php';
 $steamid = $_GET['steamid'];
 $job = $_GET['job'];

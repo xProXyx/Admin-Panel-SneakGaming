@@ -1,4 +1,5 @@
 <?php
+include('../template-parts/session.php');
 require '../config.php';
 $plate = $_GET['plate'];
   $sql = "SELECT * FROM truck_inventory WHERE plate = '{$plate}' ";
